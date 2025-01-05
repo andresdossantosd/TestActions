@@ -1,12 +1,60 @@
-on:
-  pull_request:
-    # Sequence of patterns matched against refs/heads
-    branches:
-      - master
+name: CI
 
+# on tag determines which events trigger the workflow
+on:
+
+  push:
+    # regex to ignore workflow run if push event happens on feature/* branches
+    branches-ignore:
+    - 'feature/*'
+
+  pull_request:
+    branches:
+    - master
+
+  # Allows running manually from the actions tab
+  workflow_dispatch:
+
+    # By default, jobs run in parallel or sequentialy depending on dependencies between jobs
 jobs:
-  test_schedule:
+  # build_schedule --> is the only job
+  build_hello:
+    runs-on: ubuntu-latest
+    # steps are the job task executed on the same runner, so, steps could transfer data between them !!
+    steps:
+    # this GitHub Action is just pulling our repo!!
+    - uses: actions/checkout@v3
+    - name: hello
+      run: echo "Hello World"
+
+  # this does not have dependencies
+  build_hello_api_alone:
     runs-on: ubuntu-latest
     steps:
-      - name: hello
-        run: echo "Hello World"
+    - uses: actions/checkout@v3
+    - name: "python version"
+      run: |
+        echo "Hello build_hello_api_alone"
+        echo "python -V"
+
+  # lets build job dependency, now build_hello_api job needs build_hello !!
+  build_hello_api:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: "python version"
+      run: |
+        echo "Hello build_hello_api"
+        echo "python -V"
+    needs: build_hello
+
+  package_hello_api:
+    runs-on: ubuntu-latest
+    needs:
+    - build_hello
+    - build_hello_api
+    steps:
+    - uses: actions/checkout@v3
+    - name: "python version"
+      run: |
+        echo "Hello package_hello_api"
