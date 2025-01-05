@@ -45,7 +45,7 @@ jobs:
     - name: "python version"
       run: |
         echo "Hello build_hello_api"
-        echo "python -V"
+        python -V
     needs: build_hello
 
   package_hello_api:
@@ -55,6 +55,6 @@ jobs:
     - build_hello_api
     steps:
     - uses: actions/checkout@v3
-    - name: "python version"
+    - name: "Hello"
       run: |
         echo "Hello package_hello_api"
