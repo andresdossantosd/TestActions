@@ -10,9 +10,15 @@ on:
     branches:
     - master
 
+  # Allows running manually from the actions tab
+  workflow_dispatch:
+
+
 jobs:
+  # test_schedule --> is the only job
   test_schedule:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - name: hello
       run: echo "Hello World"
