@@ -1,4 +1,8 @@
-name: CI
+name: CI-ENV
+
+# could be used on all jobs and steps
+env:
+  test_var: "Workflow scoped"
 
 # on tag determines which events trigger the workflow
 on:
@@ -17,24 +21,36 @@ on:
 
     # By default, jobs run in parallel or sequentialy depending on dependencies between jobs
 jobs:
+
   # build_schedule --> is the only job
   build_hello:
+    # could be used on this job and all their steps
+    env:
+      test_var: "Job scoped"
     runs-on: ubuntu-latest
     # steps are the job task executed on the same runner, so, steps could transfer data between them !!
     steps:
     # this GitHub Action is just pulling our repo!!
     - uses: actions/checkout@v3
     - name: hello
-      run: echo "Hello World"
+      run: |
+        echo "[ build_hello ] Hello $test_var"
+        echo "[ build_hello ] Hello ${{ env.test_var }}"
+      # could be used on this step only
+      env:
+        test_var: "Step scope"
 
   # this does not have dependencies
   build_hello_api_alone:
+    env:
+      test_var: "Job scoped"
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: "python version"
       run: |
-        echo "Hello build_hello_api_alone"
+        echo "[ build_hello_api_alone ] Hello $test_var"
+        echo "[ build_hello_api_alone ] Hello ${{ env.test_var }}"
         python -V
 
   # lets build job dependency, now build_hello_api job needs build_hello !!
