@@ -38,6 +38,9 @@ jobs:
     - name: injected_var
       run: |
         echo "action=yellow" >> $GITHUB_ENV
+    - name: injected_var_echo
+      run: |
+        echo "[ action ] Hello ${{ env.action }}"
       # could be used on this step only
       env:
         test_var: "Step scope"
@@ -64,8 +67,10 @@ jobs:
       run: |
         echo "Hello build_hello_api"
         test_var=$(python -V)
+        echo "[ action ] Hello ${{ env.action }}"
     - name: "test_var redirect value"
       run: echo "Hello $test_var"
+
     needs: build_hello
 
   package_hello_api:
