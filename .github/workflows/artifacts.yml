@@ -1,0 +1,37 @@
+name: actions_artifacts
+
+on:
+  push:
+
+
+jobs:
+
+  # create artifact
+  upload_artifact:
+    runs-on: ubuntu-latest
+    steps:
+
+    # Create File
+    - name: CreateFile
+      run: echo "File Content" > file
+
+    # Upload artifact to GitHub
+    - uses: actions/upload-artifact@v2
+      with:
+        name: file
+        path: file.txt
+        retention_days: 10
+
+  # download artifact
+  download_artifact:
+    runs-on: ubuntu-latest
+    steps:
+
+    # Add artifact on runner
+    - uses: actions/download-artifact@v2
+      with:
+        name: file
+
+    # Uses artifact
+    - name: DisplayFile
+      run: cat file.txt
