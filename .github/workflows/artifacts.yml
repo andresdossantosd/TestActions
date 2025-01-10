@@ -25,6 +25,9 @@ jobs:
   # download artifact
   download_artifact:
     runs-on: ubuntu-latest
+
+    # Add dependency to avoid parallel execution and artifact not ready
+    needs: upload_artifact
     steps:
 
     # Add artifact on runner
