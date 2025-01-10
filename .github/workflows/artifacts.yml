@@ -21,7 +21,7 @@ jobs:
       with:
         name: file1
         path: file1.txt
-        retention_days: 10
+        retention-days: 10
 
   # download artifact
   download_artifact:
