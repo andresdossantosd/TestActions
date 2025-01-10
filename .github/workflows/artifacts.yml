@@ -13,13 +13,14 @@ jobs:
 
     # Create File
     - name: CreateFile
-      run: echo "File Content" > file
+      run: echo "File Content" > file1.txt
 
     # Upload artifact to GitHub
-    - uses: actions/upload-artifact@v4
+    - name: Upload a single artifact
+      uses: actions/upload-artifact@v4
       with:
-        name: file
-        path: file.txt
+        name: file1
+        path: file1.txt
         retention_days: 10
 
   # download artifact
@@ -31,10 +32,11 @@ jobs:
     steps:
 
     # Add artifact on runner
-    - uses: actions/download-artifact@v4
+    - name: Download a single artifact
+      uses: actions/download-artifact@v4
       with:
-        name: file
+        name: file1
 
     # Uses artifact
     - name: DisplayFile
-      run: cat file.txt
+      run: cat file1.txt
