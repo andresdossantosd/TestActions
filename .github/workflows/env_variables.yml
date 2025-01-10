@@ -37,26 +37,15 @@ jobs:
         echo "action=yellow" >> $GITHUB_ENV
     - name: injected_var
       run: |
-        echo "action=yellow" >> $GITHUB_ENV
+        echo "action2=blue" >> $GITHUB_ENV
+        echo "[ action ] Hello ${{ env.action }}"
     - name: injected_var_echo
       run: |
         echo "[ action ] Hello ${{ env.action }}"
+        echo "[ action2 ] Hello ${{ env.action2 }}"
       # could be used on this step only
       env:
         test_var: "Step scope"
-
-  # this does not have dependencies
-  build_hello_api_alone:
-    env:
-      test_var: "Job scoped"
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: "python version"
-      run: |
-        echo "[ build_hello_api_alone ] Hello $test_var"
-        echo "[ build_hello_api_alone ] Hello ${{ env.test_var }}"
-        python -V
 
   # lets build job dependency, now build_hello_api job needs build_hello !!
   build_hello_api:
@@ -65,11 +54,10 @@ jobs:
     - uses: actions/checkout@v3
     - name: "python version"
       run: |
-        echo "Hello build_hello_api"
-        test_var=$(python -V)
         echo "[ action ] Hello ${{ env.action }}"
+        echo "[ action2 ] Hello ${{ env.action2 }}"
     - name: "test_var redirect value"
-      run: echo "Hello $test_var"
+      run: ! echo "[ action ] Hello ${{ env.action }}" echo "[ action2 ] Hello ${{ env.action2 }}"
 
     needs: build_hello
 
@@ -83,3 +71,16 @@ jobs:
     - name: "Hello"
       run: |
         echo "Hello ${{ env.test_var }}"
+
+  # this does not have dependencies
+  build_hello_api_alone:
+    env:
+      test_var: "Job scoped"
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: "python version"
+      run: |
+        echo "[ build_hello_api_alone ] Hello $test_var"
+        echo "[ build_hello_api_alone ] Hello ${{ env.test_var }}"
+        python -V
