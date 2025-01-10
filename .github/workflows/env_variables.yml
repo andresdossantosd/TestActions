@@ -57,7 +57,8 @@ jobs:
         echo "[ action ] Hello ${{ env.action }}"
         echo "[ action2 ] Hello ${{ env.action2 }}"
     - name: "test_var redirect value"
-      run: ! echo "[ action ] Hello ${{ env.action }}" echo "[ action2 ] Hello ${{ env.action2 }}"
+      run: |
+        echo "[ action ] Hello ${{ env.action }}" echo "[ action2 ] Hello ${{ env.action2 }}"
 
     needs: build_hello
 
