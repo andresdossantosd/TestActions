@@ -10,6 +10,8 @@ jobs:
     # Map outputs of each steps
     outputs:
       var1: ${{ steps.step1.outputs.info_1 }}
+      var2: ${{ steps.step1.outputs.info_2 }}
+      var3: ${{ steps.step1.outputs.info_3 }}
     strategy:
       matrix:
         exec: [ 1, 2, 3 ]
@@ -28,4 +30,4 @@ jobs:
       VAR1: ${{ needs.job1.outputs.var1 }}
     steps:
     - name: draw output 1
-      run: echo $VAR1  ${{ needs.job1.outputs.var2 }}
+      run: echo $VAR1  ${{ needs.job1.outputs.var2 }} $VAR3
