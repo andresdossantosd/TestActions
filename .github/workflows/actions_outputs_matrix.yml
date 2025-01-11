@@ -28,6 +28,7 @@ jobs:
     # Other jobs output could be retrive it via env variables or directly with contexts 
     env:
       VAR1: ${{ needs.job1.outputs.var1 }}
+      VAR3: ${{ needs.job1.outputs.var3 }}
     steps:
     - name: draw output 1
       run: echo $VAR1  ${{ needs.job1.outputs.var2 }} $VAR3
