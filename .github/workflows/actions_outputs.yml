@@ -21,7 +21,7 @@ jobs:
       run: echo "info2=contenido2" >> $GITHUB_OUTPUT
     # check that this is just a file
     - name: see $GITHUB_OUTPUT content
-      id: step2
+      id: step3
       run: echo "$GITHUB_OUTPUT"
   job2:
     runs-on: ubuntu-latest
