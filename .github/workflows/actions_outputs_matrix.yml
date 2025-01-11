@@ -1,4 +1,4 @@
-name: GitHubActionOutput
+name: GitHubActionOutputMatrix
 
 on:
   push:
