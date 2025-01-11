@@ -1,0 +1,31 @@
+name: GitHubActionOutput
+
+on:
+  push:
+
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    # Map outputs of each steps
+    outputs:
+      var1: ${{ steps.step1.outputs.info1 }}
+    strategy:
+      matrix:
+        exec: [ 1, 2, 3 ]
+    steps:
+    # create outputs writing on GitHub Output file on each step (and above map them later)
+    - name: create output 1
+      id: step1
+      run: echo "info_${{ matrix.exec }}=contenido_${{ matrix.exec }}" >> $GITHUB_OUTPUT
+
+  job2:
+    runs-on: ubuntu-latest
+    # dependency to job 1, so outputs are ready before executing this job
+    needs: job1
+    # Other jobs output could be retrive it via env variables or directly with contexts 
+    env:
+      VAR1: ${{ needs.job1.outputs.var1 }}
+    steps:
+    - name: draw output 1
+      run: echo $VAR1  ${{ needs.job1.outputs.var2 }}
